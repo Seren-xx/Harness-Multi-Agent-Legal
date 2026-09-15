@@ -77,10 +77,9 @@ Redis
 - **双模型互备**：阿里百炼 Qwen / DeepSeek 自动回退；JSON 解析失败自动追加修复指令重试
 - **LangSmith 集成**：多智能体调用链路与节点耗时追踪
 
-### 🖥️ 可视化与部署
+### 🖥️ 可视化
 
 - **Streamlit 工作台（单页）**：对话 + 任务看板 + 研究发现溯源 + 冲突裁决展示，进程内直调工作流，无需单独后端
-- **Docker Compose**：app（Streamlit）+ redis 一键编排
 
 ---
 
@@ -137,7 +136,7 @@ Redis
 │  └──────────┘ └──────────┘ └───────────────┘ └──────────────┘  │
 │  ┌─────────────────────────┐  ┌─────────────────────────────┐  │
 │  │ Redis                   │  │ 阿里百炼 Qwen/DeepSeek       │  │
-│  │ 对话记忆 + 案件 Blackboard│  │ 大模型 API（双模型互备）      │  │
+│  │ 对话记忆 + 案件 Blackboard│  │ 大模型 API（双模型）       │  │
 │  └─────────────────────────┘  └─────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -157,10 +156,9 @@ Redis
 | 关键词检索 | BM25 + Jieba | 中文分词与关键词匹配 |
 | 嵌入模型 | BGE-small-zh-v1.5 | 中文语义向量化 |
 | 重排模型 | BGE-Reranker-base | 检索结果 CrossEncoder 精准排序 |
-| 大模型 | 阿里百炼 Qwen / DeepSeek | 日常推理 / 备用（互为降级备份） |
+| 大模型 | 阿里百炼 Qwen / DeepSeek | 日常推理 / 深层推理（互为降级备份） |
 | 共享状态 | Redis | 对话记忆 + 案件 Blackboard 持久化 |
 | Web 界面 | Streamlit | 单页可视化工作台（对话 + 任务看板 + 溯源 + 冲突裁决） |
-| 容器化 | Docker Compose | app + redis 一键编排 |
 | 监控 | LangSmith | 多智能体调用链路与性能追踪 |
 
 ---
@@ -171,7 +169,7 @@ Redis
 
 - Python 3.10+
 - Redis 服务（可选，未安装时自动降级为内存存储）
-- 阿里云百炼 和/或 DeepSeek API 密钥（至少一个）
+- 阿里云百炼 和 DeepSeek API 密钥
 
 ### 安装步骤
 
@@ -446,21 +444,18 @@ Agent/
 │   ├── ui/app.py                        #   Streamlit 工作台：任务看板 / 溯源 / 冲突裁决
 │   └── eval/                            #   评测集 + 评测脚本
 ```
-
-> **v1 固定流水线（保留）**：`legacy/multi_agent_brain.py` 为初版固定流程（Router → 查询扩展 → 检索 → 质量校验 → 生成 → 6 维审查 → 检索增强/重写/备选方案），完整保留。其 4 个法律工具（法条检索 / 判例检索 / 赔偿计算 / 引用验证）与 Harness 机制（消息标准化 normalize_messages、上下文过长自动压缩、备选方案三选一）是 v2 工程化的基础。**v2 已自包含**：检索（`runtime/retrieval.py`）、对话记忆（`state/conversation_memory.py`）、配置（`config.py`）均复制自 v1 原实现（算法与行为保持一致），运行时不引用 legacy 目录。
-
 ---
 
 ## ⚙️ 配置说明
 
-基础配置（路径 / 模型 / 检索 / Redis）见 `legal_flow/config.py`（复制自 legacy 配置并内联），多智能体运行时参数见同文件 v2 扩展节，均可用环境变量覆盖（见 `.env.example`）。
+基础配置（路径 / 模型 / 检索 / Redis）见 `legal_flow/config.py`
 
 ### 模型配置
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
 | DASHSCOPE_MODEL | qwen3.7-plus | 阿里百炼模型（日常推理，主用） |
-| DEEPSEEK_MODEL | deepseek-chat | DeepSeek模型（备用） |
+| DEEPSEEK_MODEL | deepseek-chat | DeepSeek模型（深层推理，备用） |
 | EMBEDDING_MODEL_NAME | BAAI/bge-small-zh-v1.5 | 中文嵌入模型 |
 | RERANKER_MODEL_NAME | BAAI/bge-reranker-base | 中文重排模型 |
 
@@ -514,7 +509,7 @@ Agent/
 
 ### 推理优化
 
-- **双模型策略**：日常推理用阿里百炼 Qwen，DeepSeek 自动降级备份，互不单点依赖
+- **双模型策略**：日常推理用阿里百炼 Qwen，DeepSeek 深层推理，互不单点依赖
 - **温度控制**：规划 0.2 / 分析 0.1 / 审查 0，兼顾灵活性与一致性
 - **兜底计划**：LLM 规划失败自动回退默认任务计划，保证系统不中断
 - **问候短路**：问候语规则识别直接回复，不进入工作流
