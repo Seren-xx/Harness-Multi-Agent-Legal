@@ -1,0 +1,10 @@
+{"id": 1, "query": "别人抄袭我的产品包装设计拿去卖，我能要求多少赔偿？", "expected_laws": ["中华人民共和国著作权法"], "expected_keywords": ["赔偿", "侵权"]}
+{"id": 2, "query": "网购买到假货，商家构成欺诈，可以要求什么赔偿？", "expected_laws": ["中华人民共和国消费者权益保护法"], "expected_keywords": ["三倍", "赔偿"]}
+{"id": 3, "query": "在电商平台买到不合格商品，平台需要承担责任吗？", "expected_laws": ["中华人民共和国电子商务法"], "expected_keywords": ["平台", "责任"]}
+{"id": 4, "query": "公司一直不给员工缴纳社会保险，员工怎么维权？", "expected_laws": ["中华人民共和国社会保险法"], "expected_keywords": ["社会保险", "缴纳"]}
+{"id": 5, "query": "企业偷排污水会面临什么处罚？", "expected_laws": ["中华人民共和国环境保护法"], "expected_keywords": ["污染", "处罚"]}
+{"id": 6, "query": "网上销售假药会有什么法律后果？", "expected_laws": ["中华人民共和国药品管理法"], "expected_keywords": ["药品", "处罚"]}
+{"id": 7, "query": "接种疫苗出现异常反应，有什么保障机制？", "expected_laws": ["中华人民共和国疫苗管理法"], "expected_keywords": ["疫苗", "异常"]}
+{"id": 8, "query": "长期接触粉尘得了尘肺病，算职业病吗？怎么认定？", "expected_laws": ["中华人民共和国职业病防治法"], "expected_keywords": ["职业病", "诊断"]}
+{"id": 9, "query": "行政机关对我罚款，什么情况下处罚决定不能成立？", "expected_laws": ["中华人民共和国行政处罚法"], "expected_keywords": ["处罚", "程序"]}
+{"id": 10, "query": "网站不落实网络安全保护义务会受到什么处罚？", "expected_laws": ["中华人民共和国网络安全法"], "expected_keywords": ["网络安全", "处罚"]}
